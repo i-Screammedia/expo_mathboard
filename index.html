@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. 공간과 입체 | AIDT 수학교구 화면</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="css/style.css?v=tool6" />
+  <link rel="stylesheet" href="css/overlay.css?v=tool14" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-left">
+        <button class="back-btn" data-feature="back" aria-label="뒤로">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="title-wrap">
+          <div class="title-row">
+            <h1>3. 공간과 입체</h1>
+          </div>
+          <p>만든 모양과 쌓기나무의 개수를 알아볼게요(3) – 위에서 본 모양에 수를 쓰는 방법</p>
+        </div>
+      </div>
+
+      <div class="zoom">
+        <button type="button" id="zoomIn" aria-label="확대">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+        <span class="zoom-value" id="zoomValue">100 %</span>
+        <button type="button" id="zoomOut" aria-label="축소">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="header-right">
+        <div class="icon-group">
+          <span style="position:relative">
+            <button class="icon-btn" id="btnLock" data-feature="lock" aria-label="화면 잠금" aria-pressed="false">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V8a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+          </span>
+          <span style="position:relative">
+            <button class="icon-btn" id="btnMonitor" data-feature="monitor" aria-label="학급 모니터링" aria-pressed="false">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 21h8M12 17v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+          </span>
+          <span style="position:relative">
+            <button class="icon-btn" id="btnShare" data-feature="share" aria-label="주목하기" aria-pressed="false">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+            </button>
+          </span>
+          <span style="position:relative">
+            <button class="icon-btn" id="btnAnno" data-feature="annotate" aria-label="판서" aria-pressed="false">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 20l4.5-1.2L20 7.3 16.7 4 5.2 15.5 4 20z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </button>
+          </span>
+        </div>
+        <div class="class-time">수업 시간 <b id="classTimer">15:25</b></div>
+        <span style="position:relative">
+          <button class="btn-orange" data-feature="end">수업 종료</button>
+        </span>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="slide-zoom" id="slideZoom">
+        <section class="page img-page active" data-page="1">
+          <div class="slide-stage">
+            <div class="cover-fit">
+              <img src="img/slide.png" alt="이번 시간에 공부할 내용">
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="lock-dim" id="lockDim"></div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <button class="foot-btn" data-feature="toc">
+          <span class="ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 7h12M8 12h12M8 17h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="4" cy="7" r="1.3" fill="currentColor"/><circle cx="4" cy="12" r="1.3" fill="currentColor"/><circle cx="4" cy="17" r="1.3" fill="currentColor"/></svg>
+          </span>
+          목록
+        </button>
+        <button class="foot-btn" data-feature="report">
+          <span class="ico" style="color:#e53935">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 14a6 6 0 0012 0c0-4-3-7-6-11-3 4-6 7-6 11z" fill="currentColor"/><rect x="11" y="19" width="2" height="3" rx="1" fill="currentColor"/></svg>
+          </span>
+          오류 신고
+        </button>
+      </div>
+
+      <div class="pager">
+        <button class="pager-btn" id="prevPage" aria-label="이전 쪽">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14.5 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="pager-now" id="pageNow">1</div>
+        <span class="pager-total">/ 7</span>
+        <button class="pager-btn" id="nextPage" aria-label="다음 쪽">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9.5 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div class="footer-right">
+        <button class="foot-btn" data-feature="game">
+          <span class="ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="2" y="9" width="20" height="10" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M7 13v2M7 14H5M9 14h2M16 12h3M16 16h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M8 9V6a2 2 0 114 0v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </span>
+          수학 게임
+        </button>
+        <button class="foot-btn" data-feature="timer">
+          <span class="ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 9v4l2.5 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 4h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </span>
+          타이머
+        </button>
+        <button class="foot-btn" data-feature="pick">
+          <span class="ico">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><path d="M12 4.8v2.4M12 16.8v2.4M4.8 12h2.4M16.8 12h2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </span>
+          뽑기
+        </button>
+        <span class="ai-foot-wrap">
+          <span class="ai-foot-ping" aria-hidden="true"></span>
+          <span class="ai-foot-ping is-delay" aria-hidden="true"></span>
+          <button class="foot-btn ai-foot-btn" type="button" data-feature="ai" aria-label="AI 수학교구">
+            <span class="ico">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <rect x="4.2" y="8.2" width="15.6" height="11.4" rx="4.2" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="12" cy="4.2" r="1.15" fill="currentColor"/>
+                <path d="M12 5.4v2.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                <circle cx="9.1" cy="13.2" r="1.15" fill="currentColor"/>
+                <circle cx="14.9" cy="13.2" r="1.15" fill="currentColor"/>
+                <path d="M9.4 17.1h5.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+            </span>
+            AI 수학교구
+          </button>
+          <div class="ai-foot-tip" role="tooltip">👉 👆 터치해서 AI 수학교구를 체험해 보세요!</div>
+        </span>
+      </div>
+    </footer>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <aside class="toc-panel" id="panelToc">
+    <div class="toc-head">
+      <h3>수업 내용</h3>
+      <div class="ai-chrome">
+        <button class="close-x" data-close aria-label="닫기">&times;</button>
+      </div>
+    </div>
+    <div class="toc-list" id="tocList"></div>
+  </aside>
+
+  <div class="modal ai-modal" id="panelAi">
+    <div class="ai-head">
+      <h3>AI 수학교구</h3>
+      <div class="ai-chrome">
+        <button type="button" class="ai-chrome-btn" id="aiPopout" aria-label="새 창">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M9 4h11v11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 4l-7 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" class="ai-chrome-btn" id="aiMaximize" aria-label="최대화">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="5" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="ai-body">
+      <button type="button" class="math-tool is-hot" data-math-tool="매쓰 보드" data-math-url="https://iscream.easypub.co.kr/2026/math/iscream_math_education_tools/src/tools/">
+        <span class="math-tool-ico" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <polygon points="6,21 16,5 26,21" fill="#3d8bff"/>
+            <circle cx="34.5" cy="12.5" r="7.4" fill="#6f5cff"/>
+            <polygon points="16,26 22,29.6 22,36.8 16,40.4 10,36.8 10,29.6" fill="#12b5a0"/>
+            <rect x="26.5" y="26.5" width="14" height="14" rx="1.6" fill="#ff5a3c"/>
+          </svg>
+        </span>
+        <span>매쓰 보드</span>
+      </button>
+      <button type="button" class="math-tool" data-math-tool="알지오매스 키즈 2D">
+        <span class="math-tool-ico" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <rect x="11" y="11" width="26" height="26" fill="none" stroke="#12b5a0" stroke-width="2.4"/>
+            <rect x="8" y="8" width="6.2" height="6.2" fill="#12b5a0"/>
+            <rect x="33.8" y="8" width="6.2" height="6.2" fill="#12b5a0"/>
+            <rect x="8" y="33.8" width="6.2" height="6.2" fill="#12b5a0"/>
+            <rect x="33.8" y="33.8" width="6.2" height="6.2" fill="#12b5a0"/>
+            <path d="M30 30L19.4 19.4" fill="none" stroke="#ff5a3c" stroke-width="3.1" stroke-linecap="round"/>
+            <polygon points="14.6,14.6 26.6,17.2 19.4,19.4 17.2,26.6" fill="#ff5a3c"/>
+          </svg>
+        </span>
+        <span>알지오매스 키즈 2D</span>
+      </button>
+      <button type="button" class="math-tool" data-math-tool="알지오매스 키즈 3D">
+        <span class="math-tool-ico" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <polygon points="24,8 40,16.5 24,25 8,16.5" fill="#2ec9b6"/>
+            <polygon points="8,16.5 24,25 24,41 8,32.5" fill="#5b7cff"/>
+            <polygon points="24,25 40,16.5 40,32.5 24,41" fill="#7a6bff"/>
+          </svg>
+        </span>
+        <span>알지오매스 키즈 3D</span>
+      </button>
+      <button type="button" class="ai-close-btn" data-close>닫기</button>
+    </div>
+  </div>
+  <div class="ai-math-tip" id="aiMathTip" role="tooltip">총 21종을 제공하는 AI 수학교구<br>'매쓰 보드'가 새롭게 추가되었습니다.</div>
+
+  <div class="stage" id="panelMonitor">
+    <div class="monitor-head">
+      <h3>모니터링</h3>
+      <div class="monitor-actions">
+        <button type="button" class="ghost-btn" id="muteAll">모두 소리 끄기</button>
+        <button type="button" class="ghost-btn" id="openMonitorWin">새 창 열기</button>
+        <button class="close-x" data-close aria-label="닫기">&times;</button>
+      </div>
+    </div>
+    <p class="monitor-desc">현재 학생 화면의 스크린샷을 통해 학습 상태를 확인할 수 있습니다. <b>접속 3명</b> / 미접속 2명</p>
+    <div class="monitor-body">
+      <div class="student-grid" id="studentGrid"></div>
+    </div>
+  </div>
+
+  <div class="modal choice-modal choice-sheet" id="panelTimer">
+    <div class="ai-head">
+      <h3>타이머</h3>
+      <div class="ai-chrome">
+        <button type="button" class="ai-chrome-btn" id="timerPopout" aria-label="새 창">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3.2" y="4.8" width="14.2" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M3.2 8.2h14.2" stroke="currentColor" stroke-width="1.7"/>
+            <rect x="12.4" y="12.6" width="8.4" height="8.4" rx="1.6" fill="#fff" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M16.6 14.8v4M14.6 16.8h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button type="button" class="ai-chrome-btn" id="timerMaximize" aria-label="최대화">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4.2" y="4.2" width="15.6" height="15.6" rx="2.4" stroke="currentColor" stroke-width="1.7"/>
+            <rect x="7" y="12.2" width="5.2" height="4.6" rx="0.8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M13.2 10.8L18 6M18 6v4.4M18 6h-4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="toolkit-body">
+      <div class="toolkit-grid">
+        <button type="button" class="toolkit-tile" data-kit="디지털 타이머">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <rect x="8" y="12" width="32" height="22" rx="6" fill="#ff5a2d"/>
+              <rect x="12" y="8.5" width="5" height="4" rx="1.2" fill="#ff5a2d"/>
+              <rect x="31" y="8.5" width="5" height="4" rx="1.2" fill="#ff5a2d"/>
+              <text x="24" y="28" text-anchor="middle" fill="#fff" font-size="13" font-weight="800" font-family="Pretendard, sans-serif">0:0</text>
+              <rect x="14" y="34.5" width="5" height="3.2" rx="1" fill="#ff5a2d"/>
+              <rect x="29" y="34.5" width="5" height="3.2" rx="1" fill="#ff5a2d"/>
+            </svg>
+          </span>
+          <span>디지털 타이머</span>
+        </button>
+        <button type="button" class="toolkit-tile" data-kit="아날로그 타이머">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <circle cx="16.5" cy="11" r="4.2" fill="#3b82f6"/>
+              <circle cx="31.5" cy="11" r="4.2" fill="#3b82f6"/>
+              <circle cx="24" cy="26" r="15" fill="#3b82f6"/>
+              <path d="M24 16.5v9.5l6 3.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>아날로그 타이머</span>
+        </button>
+        <button type="button" class="toolkit-tile" data-kit="모래시계">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M15 8h18v5.5c0 5.2-5.2 8.2-9 9.5 3.8 1.3 9 4.3 9 9.5V38H15v-5.5c0-5.2 5.2-8.2 9-9.5-3.8-1.3-9-4.3-9-9.5V8z" fill="none" stroke="#9aa3ad" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M18.2 11.2h11.6c0 4.4-3.6 6.6-5.8 7.4-2.2-.8-5.8-3-5.8-7.4z" fill="#9fd7ff"/>
+              <path d="M18.6 36.4h10.8c0-4.2-3.4-6.4-5.4-7.2-2 .8-5.4 3-5.4 7.2z" fill="#ff9a62"/>
+            </svg>
+          </span>
+          <span>모래시계</span>
+        </button>
+        <button type="button" class="toolkit-tile" data-kit="스톱워치">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <rect x="20.5" y="6" width="7" height="5" rx="1.6" fill="#12b5a0"/>
+              <circle cx="24" cy="27" r="14.2" fill="#12b5a0"/>
+              <path d="M24 27L24 13.2 A13.8 13.8 0 0 1 35.2 20.2z" fill="#9ff0e0"/>
+              <circle cx="24" cy="27" r="2.1" fill="#fff"/>
+            </svg>
+          </span>
+          <span>스톱워치</span>
+        </button>
+      </div>
+      <button type="button" class="ai-close-btn" data-close>닫기</button>
+    </div>
+  </div>
+
+  <div class="modal choice-modal choice-sheet" id="panelPick">
+    <div class="ai-head">
+      <h3>뽑기</h3>
+      <div class="ai-chrome">
+        <button type="button" class="ai-chrome-btn" id="pickPopout" aria-label="새 창">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3.2" y="4.8" width="14.2" height="12.6" rx="2" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M3.2 8.2h14.2" stroke="currentColor" stroke-width="1.7"/>
+            <rect x="12.4" y="12.6" width="8.4" height="8.4" rx="1.6" fill="#fff" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M16.6 14.8v4M14.6 16.8h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button type="button" class="ai-chrome-btn" id="pickMaximize" aria-label="최대화">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4.2" y="4.2" width="15.6" height="15.6" rx="2.4" stroke="currentColor" stroke-width="1.7"/>
+            <rect x="7" y="12.2" width="5.2" height="4.6" rx="0.8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M13.2 10.8L18 6M18 6v4.4M18 6h-4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="toolkit-body">
+      <div class="toolkit-grid">
+        <button type="button" class="toolkit-tile" data-kit="발표 도우미">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <circle cx="13" cy="16" r="5.2" fill="#8ec8ff"/>
+              <ellipse cx="13" cy="32.5" rx="8.2" ry="7.2" fill="#8ec8ff"/>
+              <circle cx="35" cy="16" r="5.2" fill="#8ec8ff"/>
+              <ellipse cx="35" cy="32.5" rx="8.2" ry="7.2" fill="#8ec8ff"/>
+              <circle cx="24" cy="14.2" r="6.4" fill="#3b82f6"/>
+              <ellipse cx="24" cy="33.5" rx="10.4" ry="8.2" fill="#3b82f6"/>
+            </svg>
+          </span>
+          <span>발표 도우미</span>
+        </button>
+        <button type="button" class="toolkit-tile" data-kit="사다리 타기">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M11 8v32M24 8v32M37 8v32" stroke="#3b9eff" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M11 16h26M11 24h26M11 32h26" stroke="#3b9eff" stroke-width="3" stroke-linecap="round"/>
+              <path d="M15 14l18 20" stroke="#ff6a4a" stroke-width="3.1" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>사다리 타기</span>
+        </button>
+        <button type="button" class="toolkit-tile" data-kit="돌림판">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <g transform="translate(24 22)">
+                <path d="M0 0L0-14A14 14 0 0 1 12.12-7z" fill="#ffd54a"/>
+                <path d="M0 0L12.12-7A14 14 0 0 1 12.12 7z" fill="#ff8a3d"/>
+                <path d="M0 0L12.12 7A14 14 0 0 1 0 14z" fill="#3ddc84"/>
+                <path d="M0 0L0 14A14 14 0 0 1-12.12 7z" fill="#7c5cff"/>
+                <path d="M0 0L-12.12 7A14 14 0 0 1-12.12-7z" fill="#2ec4b6"/>
+                <path d="M0 0L-12.12-7A14 14 0 0 1 0-14z" fill="#4da3ff"/>
+              </g>
+              <rect x="21.2" y="36.2" width="5.6" height="2.4" rx="0.8" fill="#c5c9ce"/>
+              <rect x="17.5" y="38.6" width="13" height="2.6" rx="1" fill="#c5c9ce"/>
+            </svg>
+          </span>
+          <span>돌림판</span>
+        </button>
+        <button type="button" class="toolkit-tile" data-kit="주사위">
+          <span class="toolkit-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <rect x="8" y="8" width="32" height="32" rx="8" fill="#6d4aff"/>
+              <circle cx="17.2" cy="17.2" r="3" fill="#fff"/>
+              <circle cx="24" cy="24" r="3" fill="#fff"/>
+              <circle cx="30.8" cy="30.8" r="3" fill="#fff"/>
+            </svg>
+          </span>
+          <span>주사위</span>
+        </button>
+      </div>
+      <button type="button" class="ai-close-btn" data-close>닫기</button>
+    </div>
+  </div>
+
+  <div class="modal game-modal" id="panelGame">
+    <div class="game-top">
+      <div class="game-unit-wrap">
+        <button type="button" class="game-unit" id="gameUnit" aria-expanded="false">
+          <span id="gameUnitLabel">3. 공간과 입체</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="game-unit-menu" id="gameUnitMenu" hidden>
+          <button type="button" data-unit="단원 전체">단원 전체</button>
+          <button type="button" data-unit="1. 분수의 나눗셈">1. 분수의 나눗셈</button>
+          <button type="button" data-unit="2. 소수의 나눗셈">2. 소수의 나눗셈</button>
+          <button type="button" data-unit="3. 공간과 입체" class="on">3. 공간과 입체</button>
+          <button type="button" data-unit="4. 비례식과 비례배분">4. 비례식과 비례배분</button>
+          <button type="button" data-unit="5. 원의 둘레와 넓이">5. 원의 둘레와 넓이</button>
+          <button type="button" data-unit="6. 원기둥, 원뿔, 구">6. 원기둥, 원뿔, 구</button>
+        </div>
+      </div>
+      <div class="game-toggle-wrap" id="gameToggleWrap">
+        <span class="game-info">
+          <i class="game-i" aria-hidden="true">i</i>
+          학생에게 수학 게임이 활성화됩니다.
+        </span>
+        <span class="game-sep" aria-hidden="true"></span>
+        <span class="game-off">비활성</span>
+        <button type="button" class="game-switch" id="gameSwitch" aria-pressed="false" aria-label="수학 게임 비활성"></button>
+        <span class="game-on">활성</span>
+      </div>
+    </div>
+    <div class="game-grid">
+      <button type="button" class="game-card" data-game="매쓰애니멀런" data-href="https://cdn.smart-aidt.com/stage/contents/resources/math_game/animal/index.html?grade=E6&semester=2&unit=414">
+        <span class="game-thumb">
+          <span class="game-badge single">싱글</span>
+          <img src="img/animal.png" alt="매쓰애니멀런">
+        </span>
+        <span class="game-card-unit">3. 공간과 입체</span>
+      </button>
+      <button type="button" class="game-card" data-game="매쓰 우주특급" data-href="https://cdn.smart-aidt.com/stage/contents/resources/math_game/cosmic/index.html?grade=E6&semester=2&unit=414">
+        <span class="game-thumb">
+          <span class="game-badge single">싱글</span>
+          <img src="img/space.png" alt="매쓰 우주특급">
+        </span>
+        <span class="game-card-unit">3. 공간과 입체</span>
+      </button>
+      <button type="button" class="game-card" data-game="매쓰 노바 가디언즈" data-href="https://cdn.smart-aidt.com/stage/contents/resources/math_game/nova/index.html?grade=E6&semester=2&unit=414">
+        <span class="game-thumb">
+          <span class="game-badge single">싱글</span>
+          <img src="img/nova.png" alt="매쓰 노바 가디언즈">
+        </span>
+        <span class="game-card-unit">3. 공간과 입체</span>
+      </button>
+      <button type="button" class="game-card" data-game="스노우 매쓰러시" data-href="https://cdn.smart-aidt.com/stage/contents/resources/math_game/snow/index.html?grade=E6&semester=2&unit=414">
+        <span class="game-thumb">
+          <span class="game-badge single">싱글</span>
+          <img src="img/snow.png" alt="스노우 매쓰러시">
+        </span>
+        <span class="game-card-unit">3. 공간과 입체</span>
+      </button>
+      <button type="button" class="game-card is-soon" data-game="매쓰 배틀아레나" data-soon="true">
+        <span class="game-thumb">
+          <span class="game-badge multi">멀티</span>
+          <img src="img/multi-battle.png" alt="매쓰 배틀아레나">
+          <span class="coming-soon-overlay">
+            <strong>2027년 업데이트 예정</strong>
+            <em>친구들과 대결하며 풀어요</em>
+          </span>
+        </span>
+        <span class="game-card-unit">3. 공간과 입체</span>
+      </button>
+      <button type="button" class="game-card is-soon" data-game="매쓰 팀퀘스트" data-soon="true">
+        <span class="game-thumb">
+          <span class="game-badge multi">멀티</span>
+          <img src="img/multi-quest.png" alt="매쓰 팀퀘스트">
+          <span class="coming-soon-overlay">
+            <strong>2027년 업데이트 예정</strong>
+            <em>모둠이 함께 미션을 해결해요</em>
+          </span>
+        </span>
+        <span class="game-card-unit">3. 공간과 입체</span>
+      </button>
+      <button type="button" class="game-card is-soon" data-game="매쓰 릴레이런" data-soon="true">
+        <span class="game-thumb">
+          <span class="game-badge multi">멀티</span>
+          <img src="img/multi-relay.png" alt="매쓰 릴레이런">
+          <span class="coming-soon-overlay">
+            <strong>2027년 업데이트 예정</strong>
+            <em>이어달리기로 문제를 넘겨요</em>
+          </span>
+        </span>
+        <span class="game-card-unit">3. 공간과 입체</span>
+      </button>
+    </div>
+    <p class="game-soon-note">
+      <i class="game-i" aria-hidden="true">i</i>
+      멀티형 게임은 교실에서 함께 즐길 수 있도록 <b>2027년</b>에 업데이트될 예정입니다.
+    </p>
+    <button type="button" class="ai-close-btn" data-close>닫기</button>
+  </div>
+
+  <div class="modal report-modal" id="panelReport">
+    <div class="report-head">
+      <h3>오류 신고</h3>
+    </div>
+    <div class="report-body">
+      <div class="report-banner">
+        <span class="report-mascot" aria-hidden="true">
+          <svg viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="40" fill="#8ed12a"/>
+            <ellipse cx="44" cy="70" rx="18" ry="8" fill="#6fb31c"/>
+            <circle cx="32" cy="40" r="11" fill="#fff" stroke="#222" stroke-width="2.4"/>
+            <circle cx="56" cy="40" r="11" fill="#fff" stroke="#222" stroke-width="2.4"/>
+            <path d="M43 40h2" stroke="#222" stroke-width="2.4"/>
+            <circle cx="32" cy="41" r="3.2" fill="#222"/>
+            <circle cx="56" cy="41" r="3.2" fill="#222"/>
+            <path d="M36 56c5 5 11 5 16 0" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M62 28l18-16" stroke="#f4c542" stroke-width="6" stroke-linecap="round"/>
+            <path d="M78 10l6 6-4 2-4-4 2-4z" fill="#ee6aa7"/>
+            <path d="M62 28l-3 4 6 5 4-4z" fill="#f7e27a"/>
+          </svg>
+        </span>
+        <p>콘텐츠 이용 중 발견한 오류를 알려주세요.<br>작성해 주신 내용은 담당자가 신속하게 검토하겠습니다.<br>오류 화면을 함께 첨부해 주시면 더욱 빠른 확인에 도움이 됩니다.</p>
+      </div>
+      <div class="report-row">
+        <label for="reportTitle">제목 <i>*</i></label>
+        <div class="report-control">
+          <input id="reportTitle" type="text" maxlength="50" placeholder="제목을 입력해 주세요.">
+          <span class="report-count" id="reportTitleCount">0/50</span>
+        </div>
+      </div>
+      <div class="report-row">
+        <label for="reportType">오류 유형 <i>*</i></label>
+        <div class="report-types">
+          <select id="reportType">
+            <option>내용/기술</option>
+            <option>학습 활동</option>
+            <option>기타</option>
+          </select>
+          <select id="reportDetail">
+            <option value="">상세 분류</option>
+            <option>오탈자</option>
+            <option>이미지/자료</option>
+            <option>기능 오류</option>
+            <option>기타</option>
+          </select>
+        </div>
+      </div>
+      <div class="report-row report-row-top">
+        <label for="reportText">오류 내용 <i>*</i></label>
+        <div class="report-control report-area">
+          <textarea id="reportText" maxlength="300" placeholder="내용을 입력해 주세요."></textarea>
+          <span class="report-count" id="reportTextCount">0/300</span>
+        </div>
+      </div>
+      <div class="report-row report-row-top">
+        <span class="report-file-label">첨부 파일</span>
+        <label class="report-upload" for="reportFile">
+          <input id="reportFile" type="file" accept="image/*" hidden>
+          <span class="report-upload-ico" aria-hidden="true">
+            <svg viewBox="0 0 48 48">
+              <path d="M14 10h14l8 8v20a4 4 0 01-4 4H14a4 4 0 01-4-4V14a4 4 0 014-4z" fill="#ececec" stroke="#bdbdbd" stroke-width="1.6"/>
+              <path d="M28 10v8h8" fill="none" stroke="#bdbdbd" stroke-width="1.6"/>
+              <circle cx="34" cy="34" r="9" fill="#3d7eff"/>
+              <path d="M34 30v8M30 34h8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="report-upload-name" id="reportFileName"></span>
+        </label>
+      </div>
+      <div class="report-actions">
+        <button type="button" data-close>취소</button>
+        <button type="button" id="reportSend">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal end-modal" id="panelEnd" role="dialog" aria-modal="true" aria-labelledby="endMsg">
+    <p class="end-msg" id="endMsg">학습 이력을 전송하고,<br>수업을 종료할까요?</p>
+    <div class="end-actions">
+      <button type="button" data-close>취소</button>
+      <button type="button" class="end-ok" id="endConfirm">확인</button>
+    </div>
+  </div>
+
+  <div class="modal confirm" id="panelBack">
+    <p class="confirm-msg">수업 중입니다.<br>수업을 종료하고 나가시겠습니까?</p>
+    <div class="confirm-actions">
+      <button type="button" data-close>취소</button>
+      <button type="button" class="confirm-go" id="backLeave">나가기</button>
+    </div>
+  </div>
+
+  <div class="tool-frame" id="toolFrame">
+    <div class="tool-frame-bar">
+      <strong id="toolFrameTitle">매쓰 보드</strong>
+      <button type="button" class="tool-frame-close" id="toolFrameClose">닫기</button>
+    </div>
+    <iframe id="toolFrameIframe" title="매쓰 보드"></iframe>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/app.js?v=tool14"></script>
+</body>
+</html>
