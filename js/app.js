@@ -60,6 +60,7 @@
   const panels = {
     toc: $("#panelToc"),
     ai: $("#panelAi"),
+    guide: $("#panelGuide"),
     monitor: $("#panelMonitor"),
     game: $("#panelGame"),
     timer: $("#panelTimer"),
@@ -98,6 +99,16 @@
     Object.values(panels).forEach((el) => el?.classList.remove("show"));
     backdrop.classList.remove("show");
     document.body.classList.remove("is-modal");
+  }
+
+  let pendingGuide = false;
+  function dismissModal() {
+    const showGuide = pendingGuide && panels.ai?.classList.contains("show");
+    if (showGuide) pendingGuide = false;
+    closeAll();
+    if (showGuide) {
+      requestAnimationFrame(() => openPanel("guide"));
+    }
   }
 
   function setGameSwitch(on, silent) {
@@ -154,7 +165,7 @@
   document.addEventListener("click", (e) => {
     if (e.target.closest("[data-close]") || e.target === backdrop) {
       e.stopImmediatePropagation();
-      closeAll();
+      dismissModal();
       return;
     }
     const op = e.target.closest("[data-kit]");
@@ -202,7 +213,7 @@
     else if (f === "timer") openPanel("timer");
     else if (f === "pick") openPanel("pick");
     else if (f === "ai") {
-      if (panels.ai.classList.contains("show")) closeAll();
+      if (panels.ai.classList.contains("show")) dismissModal();
       else openPanel("ai");
     }
     else if (f === "toc") {
@@ -383,5 +394,8 @@
 
   window.addEventListener("resize", placeAiMathTip);
 
-  if (!new URLSearchParams(location.search).has("idle")) openPanel("ai");
+  if (!new URLSearchParams(location.search).has("idle")) {
+    pendingGuide = true;
+    openPanel("ai");
+  }
 })();
