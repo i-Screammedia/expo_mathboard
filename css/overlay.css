@@ -169,24 +169,24 @@ body.is-modal .ai-foot-wrap {
 }
 
 .guide-modal {
-  width: min(520px, calc(100vw - 48px));
-  border-radius: 24px;
-  padding: 40px 36px 28px;
+  width: min(1040px, calc(100vw - 48px));
+  border-radius: 36px;
+  padding: 80px 72px 56px;
   align-items: center;
   text-align: center;
-  border: 2px solid #ff6b00;
+  border: 3px solid #ff6b00;
   box-shadow: 0 16px 48px rgba(20, 24, 28, 0.22);
 }
 .guide-modal h3 {
-  font-size: 24px;
+  font-size: 48px;
   font-weight: 800;
   letter-spacing: -0.04em;
   color: #111;
-  margin: 0 0 16px;
+  margin: 0 0 32px;
 }
 .guide-modal .guide-msg {
-  margin: 0 0 28px;
-  font-size: 18px;
+  margin: 0 0 56px;
+  font-size: 36px;
   font-weight: 600;
   line-height: 1.65;
   letter-spacing: -0.03em;
@@ -195,7 +195,11 @@ body.is-modal .ai-foot-wrap {
 }
 .guide-modal .ai-close-btn {
   margin-top: 0;
-  min-width: 148px;
+  min-width: 296px;
+  height: 96px;
+  padding: 0 56px;
+  border-radius: 24px;
+  font-size: 36px;
 }
 
 .choice-modal {
