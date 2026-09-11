@@ -168,6 +168,36 @@ body.is-modal .ai-foot-wrap {
   display: none !important;
 }
 
+.guide-modal {
+  width: min(520px, calc(100vw - 48px));
+  border-radius: 24px;
+  padding: 40px 36px 28px;
+  align-items: center;
+  text-align: center;
+  border: 2px solid #ff6b00;
+  box-shadow: 0 16px 48px rgba(20, 24, 28, 0.22);
+}
+.guide-modal h3 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #111;
+  margin: 0 0 16px;
+}
+.guide-modal .guide-msg {
+  margin: 0 0 28px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.65;
+  letter-spacing: -0.03em;
+  color: #333;
+  word-break: keep-all;
+}
+.guide-modal .ai-close-btn {
+  margin-top: 0;
+  min-width: 148px;
+}
+
 .choice-modal {
   width: min(560px, calc(100vw - 48px));
   border-radius: 20px;
