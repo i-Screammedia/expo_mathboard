@@ -101,10 +101,8 @@
     document.body.classList.remove("is-modal");
   }
 
-  let pendingGuide = false;
   function dismissModal() {
-    const showGuide = pendingGuide && panels.ai?.classList.contains("show");
-    if (showGuide) pendingGuide = false;
+    const showGuide = panels.ai?.classList.contains("show");
     closeAll();
     if (showGuide) {
       requestAnimationFrame(() => openPanel("guide"));
@@ -395,7 +393,6 @@
   window.addEventListener("resize", placeAiMathTip);
 
   if (!new URLSearchParams(location.search).has("idle")) {
-    pendingGuide = true;
     openPanel("ai");
   }
 })();
