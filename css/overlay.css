@@ -377,3 +377,37 @@ body.is-modal .ai-foot-wrap {
   background: #2a2e32;
   transform: translateY(-50%) rotate(45deg);
 }
+
+#panelGame .game-unit-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+#panelGame .game-unit-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  pointer-events: none;
+}
+#panelGame .game-unit-hint .tag {
+  flex-shrink: 0;
+  background: #ff7a18;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 4px 10px;
+  box-shadow: 0 0 0 2px rgba(255, 122, 24, 0.35);
+}
+#panelGame .game-unit-hint p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+  word-break: keep-all;
+  color: #ff7a18;
+}
