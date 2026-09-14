@@ -25,6 +25,7 @@
     monitoring: false,
     kbMath: false
   };
+  const IDLE_RESET_MS = 2 * 60 * 1000;
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -392,7 +393,33 @@
 
   window.addEventListener("resize", placeAiMathTip);
 
-  if (!new URLSearchParams(location.search).has("idle")) {
+  const startWithAi = !new URLSearchParams(location.search).has("idle");
+  let idleTimer;
+  function isFreshHome() {
+    if (state.annotating || state.locked || state.sharing || state.kbMath) return false;
+    if ($("#toolFrame")?.classList.contains("show")) return false;
+    const open = Object.entries(panels)
+      .filter(([, el]) => el?.classList.contains("show"))
+      .map(([key]) => key);
+    if (startWithAi) return open.length === 1 && open[0] === "ai";
+    return open.length === 0;
+  }
+  function armIdleReset() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (isFreshHome()) {
+        armIdleReset();
+        return;
+      }
+      location.reload();
+    }, IDLE_RESET_MS);
+  }
+  ["pointerdown", "keydown", "touchstart", "wheel"].forEach((type) => {
+    document.addEventListener(type, armIdleReset, { passive: true });
+  });
+  armIdleReset();
+
+  if (startWithAi) {
     openPanel("ai");
   }
 })();
